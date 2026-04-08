@@ -110,18 +110,100 @@
             </div>
             <div>
                 <h1 class="text-xl font-black pnj-navy-text uppercase tracking-tight">HCM - CHIẾN DỊCH KHM</h1>
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Dashboard Quản trị Thông minh ✨</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="speakReport()" class="bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-all" title="Nghe tóm tắt báo cáo ✨">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pnj-navy"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-            </button>
-            <span class="bg-slate-800 text-white text-[10px] px-3 py-1.5 rounded font-bold uppercase italic">CẬP NHẬT TIẾN ĐỘ TRIỂN KHAI</span>
         </div>
     </header>
 
-    <!-- Metrics -->
+    <!-- Growth Model Diagram -->
+    <div class="max-w-[1650px] mx-auto bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6 relative overflow-hidden">
+        <h2 class="text-xs font-black text-slate-400 uppercase mb-8 text-center tracking-widest">Mô hình tác động chiến dịch</h2>
+        
+        <div class="flex flex-col items-center">
+            <!-- Equation -->
+            <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8 z-10">
+                <div class="bg-white border-2 border-pnj-navy pnj-navy-text w-40 py-4 rounded-xl shadow-sm text-center">
+                    <div class="font-black text-xl">SLKH</div>
+                    <div class="text-[9px] font-bold uppercase text-slate-500 mt-1">Khách hàng mới</div>
+                </div>
+                
+                <div class="text-3xl font-black text-slate-300">=</div>
+                
+                <div class="bg-blue-50 border-2 border-pnj-navy text-pnj-navy w-48 py-4 rounded-xl shadow-sm text-center relative">
+                    <div class="font-black text-xl">Traffic</div>
+                    <div class="text-[9px] font-bold uppercase text-slate-500 mt-1">(Lượt tiếp cận / Walk-ins)</div>
+                    <!-- Connector Line -->
+                    <div class="hidden md:block absolute -bottom-8 left-1/2 w-px h-8 bg-pnj-navy"></div>
+                </div>
+                
+                <div class="text-3xl font-black text-red-400">×</div>
+                
+                <div class="bg-[#fffbeb] border-2 border-[#FFD700] text-yellow-800 w-48 py-4 rounded-xl shadow-sm text-center relative">
+                    <div class="font-black text-xl">CR</div>
+                    <div class="text-[9px] font-bold uppercase text-yellow-600 mt-1">(Tỷ lệ chuyển đổi)</div>
+                    <!-- Connector Line -->
+                    <div class="hidden md:block absolute -bottom-8 left-1/2 w-px h-8 bg-[#FFD700]"></div>
+                </div>
+            </div>
+
+            <!-- Branches -->
+            <div class="w-full flex flex-col md:flex-row justify-center gap-8 md:gap-16 mt-8 md:pl-[240px]">
+                
+                <!-- Traffic Actions -->
+                <div class="w-full md:w-[350px] flex flex-col items-center">
+                    <div class="w-full bg-blue-50/30 border border-blue-100 rounded-xl p-5 relative">
+                        <div class="hidden md:block absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 border-t border-l border-pnj-navy bg-white transform rotate-45"></div>
+                        
+                        <div class="flex flex-col gap-2.5">
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Push local Ad
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Chăm sóc data 1-1
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Chuỗi tọa độ SN PNJ 38 năm
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Livestream
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Local F&B | Momo | Zalopay | Cellphones
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CR Actions -->
+                <div class="w-full md:w-[350px] flex flex-col items-center">
+                    <div class="w-full bg-yellow-50/30 border border-yellow-200 rounded-xl p-5 relative">
+                        <div class="hidden md:block absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 border-t border-l border-[#FFD700] bg-white transform rotate-45"></div>
+                        
+                        <div class="flex flex-col gap-2.5">
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Sản phẩm Silver, ECZ
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Trả góp 0%
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Ưu đãi 9% KHM
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Quà tặng non-purchase
+                            </div>
+                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Chương trình thi đua
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+   <!-- Metrics -->
     <div class="max-w-[1650px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div class="metric-card">
             <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Giai đoạn cập nhật</p>
@@ -136,7 +218,6 @@
             <p class="text-lg font-black text-red-800 uppercase">02</p>
         </div>
     </div>
-
     <!-- Legends & AI Tools -->
     <div class="max-w-[1650px] mx-auto flex justify-between items-center mb-4">
         <div class="flex gap-4 items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
