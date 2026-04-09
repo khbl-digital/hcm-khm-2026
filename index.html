@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard Tăng Trưởng KHM - PNJ HCM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -19,11 +19,41 @@
         .bg-sc-active { background-color: #FFD700; color: #000; } /* Vàng SC */
         .bg-cn-action { background-color: #FF0000; color: #fff; } /* Đỏ Chi nhánh */
         
+        /* Cấu trúc Grid cho Timeline */
         .timeline-grid {
             display: grid;
             grid-template-columns: 280px repeat(14, 1fr);
             gap: 1px;
             background-color: #e5e7eb;
+            position: relative;
+        }
+        
+        /* Tùy chỉnh riêng cho Mobile */
+        @media (max-width: 767px) {
+            .timeline-grid {
+                grid-template-columns: 140px repeat(14, minmax(45px, 1fr));
+            }
+            .grid-cell { font-size: 0.55rem !important; padding: 4px 6px !important; }
+            .header-cell { font-size: 0.55rem !important; padding: 8px 2px !important; }
+            .activity-bar { font-size: 0.5rem !important; height: 24px !important; padding: 0 6px !important; }
+            .workstream-title { font-size: 0.65rem !important; padding: 8px 10px !important; position: sticky; left: 0; z-index: 5; display: inline-block; min-width: 100%; box-sizing: border-box; }
+        }
+
+        /* Lớp cố định cột đầu tiên khi cuộn ngang */
+        .sticky-col {
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background-color: white;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.05);
+        }
+        .header-cell.sticky-col {
+            background-color: #002F65 !important;
+            color: white;
+            z-index: 20;
+        }
+        .grid-cell.sticky-col.bg-red-50 {
+            background-color: #fef2f2 !important; /* Fix lỗi đè màu nền đỏ */
         }
         
         .grid-cell {
@@ -45,6 +75,8 @@
             color: #4b5563;
             text-transform: uppercase;
             padding: 10px 2px;
+            display: flex;
+            align-items: center;
         }
 
         .workstream-title {
@@ -72,14 +104,8 @@
             text-overflow: ellipsis;
         }
 
-        .pulse-red {
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
+        .pulse-red { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
         .metric-card {
             background: white;
@@ -100,169 +126,184 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4">
+<body class="p-2 md:p-4">
 
     <!-- Header -->
-    <header class="max-w-[1650px] mx-auto flex flex-col md:flex-row justify-between items-center mb-6 bg-white p-6 rounded-lg shadow-sm border-t-4 border-sc-active">
-        <div class="flex items-center gap-4">
-            <div class="pnj-navy p-3 rounded">
-                <span class="text-white font-black text-xl">PNJ</span>
+    <header class="max-w-[1650px] mx-auto flex flex-col md:flex-row justify-between items-center mb-4 md:mb-6 bg-white p-4 md:p-6 rounded-lg shadow-sm border-t-4 border-sc-active gap-4 md:gap-0">
+        <div class="flex items-center gap-3 md:gap-4">
+            <div class="pnj-navy p-2 md:p-3 rounded">
             </div>
             <div>
-                <h1 class="text-xl font-black pnj-navy-text uppercase tracking-tight">HCM - CHIẾN DỊCH KHM</h1>
+                <h1 class="text-lg md:text-xl font-black pnj-navy-text uppercase tracking-tight">HCM - CHIẾN DỊCH KHM</h1>
             </div>
-        </div>
-        <div class="flex items-center gap-2">
         </div>
     </header>
 
     <!-- Growth Model Diagram -->
-    <div class="max-w-[1650px] mx-auto bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-6 relative overflow-hidden">
-        <h2 class="text-xs font-black text-slate-400 uppercase mb-8 text-center tracking-widest">Mô hình tác động chiến dịch</h2>
+    <div class="max-w-[1650px] mx-auto bg-white rounded-lg shadow-sm border border-slate-200 p-4 md:p-8 mb-4 md:mb-6 relative">
+        <h2 class="text-[10px] md:text-xs font-black text-slate-400 uppercase mb-4 md:mb-8 text-center tracking-widest">Mô hình tác động chiến dịch</h2>
         
-        <div class="flex flex-col items-center">
-            <!-- Equation -->
-            <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8 z-10">
-                <div class="bg-white border-2 border-pnj-navy pnj-navy-text w-40 py-4 rounded-xl shadow-sm text-center">
-                    <div class="font-black text-xl">SLKH</div>
-                    <div class="text-[9px] font-bold uppercase text-slate-500 mt-1">Khách hàng mới</div>
-                </div>
-                
-                <div class="text-3xl font-black text-slate-300">=</div>
-                
-                <div class="bg-blue-50 border-2 border-pnj-navy text-pnj-navy w-48 py-4 rounded-xl shadow-sm text-center relative">
-                    <div class="font-black text-xl">Traffic</div>
-                    <div class="text-[9px] font-bold uppercase text-slate-500 mt-1">(Lượt tiếp cận / Walk-ins)</div>
-                    <!-- Connector Line -->
-                    <div class="hidden md:block absolute -bottom-8 left-1/2 w-px h-8 bg-pnj-navy"></div>
-                </div>
-                
-                <div class="text-3xl font-black text-red-400">×</div>
-                
-                <div class="bg-[#fffbeb] border-2 border-[#FFD700] text-yellow-800 w-48 py-4 rounded-xl shadow-sm text-center relative">
-                    <div class="font-black text-xl">CR</div>
-                    <div class="text-[9px] font-bold uppercase text-yellow-600 mt-1">(Tỷ lệ chuyển đổi)</div>
-                    <!-- Connector Line -->
-                    <div class="hidden md:block absolute -bottom-8 left-1/2 w-px h-8 bg-[#FFD700]"></div>
+        <div class="flex flex-col md:flex-row justify-center items-center md:items-start gap-2 md:gap-6 w-full">
+            
+            <!-- SLKH Box -->
+            <div class="flex flex-col items-center">
+                <div class="bg-white border-2 border-pnj-navy pnj-navy-text w-[200px] md:w-40 h-[80px] rounded-xl shadow-sm flex flex-col justify-center items-center">
+                    <div class="font-black text-lg md:text-xl">SLKH</div>
+                    <div class="text-[8px] md:text-[9px] font-bold uppercase text-slate-500 mt-1">Khách hàng mới</div>
                 </div>
             </div>
 
-            <!-- Branches -->
-            <div class="w-full flex flex-col md:flex-row justify-center gap-8 md:gap-16 mt-8 md:pl-[240px]">
+            <!-- Equals Symbol -->
+            <div class="text-3xl font-black text-slate-300 transform rotate-90 md:rotate-0 flex items-center justify-center h-[40px] md:h-[80px]">
+                =
+            </div>
+
+            <!-- Traffic Group -->
+            <div class="flex flex-col items-center w-full max-w-[320px]">
+                <!-- Traffic Header -->
+                <div class="bg-blue-50 border-2 border-pnj-navy text-pnj-navy w-[200px] md:w-48 h-[80px] rounded-xl shadow-sm flex flex-col justify-center items-center relative z-10">
+                    <div class="font-black text-lg md:text-xl">Traffic</div>
+                    <div class="text-[8px] md:text-[9px] font-bold uppercase text-slate-500 mt-1 text-center px-2">(Lượt tiếp cận / Walk-ins)</div>
+                </div>
+                
+                <!-- Connector -->
+                <div class="w-0.5 h-6 bg-pnj-navy"></div>
                 
                 <!-- Traffic Actions -->
-                <div class="w-full md:w-[350px] flex flex-col items-center">
-                    <div class="w-full bg-blue-50/30 border border-blue-100 rounded-xl p-5 relative">
-                        <div class="hidden md:block absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 border-t border-l border-pnj-navy bg-white transform rotate-45"></div>
-                        
-                        <div class="flex flex-col gap-2.5">
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Push local Ad
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Chăm sóc data 1-1
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Chuỗi tọa độ SN PNJ 38 năm
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Livestream
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-blue-100 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy"></div> Local F&B | Momo | Zalopay | Cellphones
-                            </div>
+                <div class="w-full bg-blue-50/30 border-2 border-blue-100 border-t-pnj-navy rounded-xl p-4 relative shadow-sm mt-0">
+                    <div class="absolute -top-[8px] left-1/2 -translate-x-1/2 w-3 h-3 border-t-2 border-l-2 border-pnj-navy bg-white transform rotate-45"></div>
+                    <div class="flex flex-col gap-2.5">
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Push local Ad
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Chăm sóc data 1-1
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Chuỗi tọa độ SN PNJ 38 năm
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Livestream
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2 leading-tight">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Local F&B | Momo | Zalopay | Cellphones
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Quà tặng non-purchase
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-blue-100 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-pnj-navy shrink-0"></div> Offline walk-in
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Multiply Symbol -->
+            <div class="text-3xl font-black text-red-400 flex items-center justify-center h-[40px] md:h-[80px] my-2 md:my-0">
+                ×
+            </div>
+
+            <!-- CR Group -->
+            <div class="flex flex-col items-center w-full max-w-[320px]">
+                <!-- CR Header -->
+                <div class="bg-[#fffbeb] border-2 border-[#FFD700] text-yellow-800 w-[200px] md:w-48 h-[80px] rounded-xl shadow-sm flex flex-col justify-center items-center relative z-10">
+                    <div class="font-black text-lg md:text-xl">CR</div>
+                    <div class="text-[8px] md:text-[9px] font-bold uppercase text-yellow-600 mt-1 text-center px-2">(Tỷ lệ chuyển đổi)</div>
+                </div>
+                
+                <!-- Connector -->
+                <div class="w-0.5 h-6 bg-[#FFD700]"></div>
+                
                 <!-- CR Actions -->
-                <div class="w-full md:w-[350px] flex flex-col items-center">
-                    <div class="w-full bg-yellow-50/30 border border-yellow-200 rounded-xl p-5 relative">
-                        <div class="hidden md:block absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 border-t border-l border-[#FFD700] bg-white transform rotate-45"></div>
-                        
-                        <div class="flex flex-col gap-2.5">
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Sản phẩm Silver, ECZ
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Trả góp 0%
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Ưu đãi 9% KHM
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Quà tặng non-purchase
-                            </div>
-                            <div class="bg-white py-2.5 px-4 rounded-lg border border-yellow-200 text-xs font-bold text-slate-700 shadow-sm flex items-center gap-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700]"></div> Chương trình thi đua
-                            </div>
+                <div class="w-full bg-yellow-50/30 border-2 border-yellow-200 border-t-[#FFD700] rounded-xl p-4 relative shadow-sm mt-0">
+                    <div class="absolute -top-[8px] left-1/2 -translate-x-1/2 w-3 h-3 border-t-2 border-l-2 border-[#FFD700] bg-white transform rotate-45"></div>
+                    <div class="flex flex-col gap-2.5">
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-yellow-200 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0"></div> Sản phẩm Silver, ECZ
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-yellow-200 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0"></div> Trả góp 0%
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-yellow-200 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0"></div> Ưu đãi 9% KHM
+                        </div>
+                        <div class="bg-white py-2.5 px-3 rounded-lg border border-yellow-200 text-[11px] md:text-xs font-bold text-slate-700 shadow-sm flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0"></div> Chương trình thi đua
                         </div>
                     </div>
                 </div>
+            </div>
 
-            </div>
         </div>
     </div>
+    
    <!-- Metrics -->
-    <div class="max-w-[1650px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="metric-card">
-            <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Giai đoạn cập nhật</p>
-            <p class="text-lg font-black pnj-navy-text uppercase">06/04 - 19/04</p>
+    <div class="max-w-[1650px] mx-auto grid grid-cols-3 md:grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
+        <div class="metric-card !p-3 md:!p-4">
+            <p class="text-[8px] md:text-[10px] font-black text-slate-400 uppercase mb-1">Giai đoạn</p>
+            <p class="text-sm md:text-lg font-black pnj-navy-text uppercase">06/04 - 19/04</p>
         </div>
-        <div class="metric-card">
-            <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Số lượng actions</p>
-            <p class="text-lg font-black pnj-navy-text uppercase">12</p>
+        <div class="metric-card !p-3 md:!p-4">
+            <p class="text-[8px] md:text-[10px] font-black text-slate-400 uppercase mb-1">SL actions</p>
+            <p class="text-sm md:text-lg font-black pnj-navy-text uppercase">12</p>
         </div>
-        <div class="metric-card !border-red-600">
-            <p class="text-[10px] font-black text-red-800 uppercase mb-1">Cần CN action</p>
-            <p class="text-lg font-black text-red-800 uppercase">02</p>
+        <div class="metric-card !border-red-600 !p-3 md:!p-4">
+            <p class="text-[8px] md:text-[10px] font-black text-red-800 uppercase mb-1">Cần CN action</p>
+            <p class="text-sm md:text-lg font-black text-red-800 uppercase">02</p>
         </div>
     </div>
+
     <!-- Legends & AI Tools -->
-    <div class="max-w-[1650px] mx-auto flex justify-between items-center mb-4">
-        <div class="flex gap-4 items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
-            <div class="flex items-center gap-2">
+    <div class="max-w-[1650px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0 mb-4">
+        <div class="flex gap-4 items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 w-full md:w-auto overflow-x-auto">
+            <div class="flex items-center gap-2 shrink-0">
                 <div class="w-3 h-3 rounded bg-sc-active"></div>
-                <span class="text-[10px] font-black uppercase text-slate-600">SC Triển khai</span>
+                <span class="text-[9px] md:text-[10px] font-black uppercase text-slate-600">SC Triển khai</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 shrink-0">
                 <div class="w-3 h-3 rounded bg-cn-action pulse-red"></div>
-                <span class="text-[10px] font-black uppercase text-red-600">Action Chi nhánh (Plan)</span>
+                <span class="text-[9px] md:text-[10px] font-black uppercase text-red-600">Action CN (Plan)</span>
             </div>
         </div>
         
-        <div class="flex gap-2">
-            <button onclick="generateStrategicInsights()" class="flex items-center gap-2 bg-white border border-pnj-navy px-4 py-1.5 rounded-full hover:bg-slate-50 transition-all shadow-sm">
-                <span id="ai-btn-text" class="text-[10px] font-black uppercase pnj-navy-text">✨ Phân tích Roadmap</span>
+        <div class="flex gap-2 w-full md:w-auto">
+            <button onclick="generateStrategicInsights()" class="flex-1 md:flex-none justify-center flex items-center gap-2 bg-white border border-pnj-navy px-3 md:px-4 py-2 md:py-1.5 rounded-full hover:bg-slate-50 transition-all shadow-sm">
+                <span id="ai-btn-text" class="text-[9px] md:text-[10px] font-black uppercase pnj-navy-text">✨ Phân tích</span>
                 <div id="ai-loading" class="hidden spinner"></div>
             </button>
-            <button onclick="showContentModal()" class="flex items-center gap-2 bg-pnj-navy text-white px-4 py-1.5 rounded-full hover:opacity-90 transition-all shadow-sm">
-                <span class="text-[10px] font-black uppercase">✨ Tạo Nội Dung Ads/Live</span>
+            <button onclick="showContentModal()" class="flex-1 md:flex-none justify-center flex items-center gap-2 bg-pnj-navy text-white px-3 md:px-4 py-2 md:py-1.5 rounded-full hover:opacity-90 transition-all shadow-sm">
+                <span class="text-[9px] md:text-[10px] font-black uppercase">✨ Nội Dung</span>
             </button>
         </div>
     </div>
 
     <!-- AI Insights Panel -->
-    <div id="ai-panel" class="hidden max-w-[1650px] mx-auto mb-6 bg-white border-l-4 border-pnj-navy p-6 rounded-lg shadow-md text-sm transition-all" onclick="this.classList.add('hidden')">
+    <div id="ai-panel" class="hidden max-w-[1650px] mx-auto mb-6 bg-white border-l-4 border-pnj-navy p-4 md:p-6 rounded-lg shadow-md text-sm transition-all" onclick="this.classList.add('hidden')">
         <div class="flex justify-between items-start mb-2">
             <h3 class="font-black pnj-navy-text uppercase text-xs">✨ Phân tích Chiến lược từ Gemini</h3>
             <span class="text-[10px] text-slate-400 font-bold italic">Bấm để đóng</span>
         </div>
-        <div id="ai-content" class="text-slate-700 leading-relaxed"></div>
+        <div id="ai-content" class="text-slate-700 leading-relaxed text-xs md:text-sm"></div>
+    </div>
+
+    <!-- Hướng dẫn cuộn trên Mobile -->
+    <div class="md:hidden text-[10px] text-slate-500 font-bold text-center mb-2 italic animate-pulse">
+        👈 Vuốt ngang để xem chi tiết tiến độ 👉
     </div>
 
     <!-- Roadmap Table -->
-    <div class="max-w-[1650px] mx-auto bg-white rounded-lg shadow-xl overflow-hidden border border-slate-200 mb-8">
-        <div class="overflow-x-auto">
-            <div class="min-w-[1550px]" id="roadmap-data">
+    <div class="max-w-[1650px] mx-auto bg-white rounded-lg shadow-xl overflow-hidden border border-slate-200 mb-8 relative">
+        <div class="overflow-x-auto pb-2">
+            <div class="min-w-[700px] md:min-w-[1550px]" id="roadmap-data">
+                
                 <div class="timeline-grid">
-                    <div class="header-cell pnj-navy !text-white italic">Hạng mục / Ngày</div>
+                    <div class="header-cell sticky-col pnj-navy !text-white italic">Hạng mục / Ngày</div>
                     <div class="header-cell">06/04</div><div class="header-cell">07/04</div><div class="header-cell">08/04</div><div class="header-cell">09/04</div><div class="header-cell">10/04</div><div class="header-cell">11/04</div><div class="header-cell">12/04</div><div class="header-cell">13/04</div><div class="header-cell">14/04</div><div class="header-cell">15/04</div><div class="header-cell">16/04</div><div class="header-cell">17/04</div><div class="header-cell">18/04</div><div class="header-cell">19/04</div>
                 </div>
 
                 <div class="workstream-title">1. PRODUCT</div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Tăng cường sản phẩm Silver & ECZ</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Tăng cường sản phẩm Silver & ECZ</div>
                     <div class="grid-cell col-start-4 col-span-11 relative">
                         <div class="activity-bar bg-sc-active uppercase">Silver: 100 mẫu (KDQT) | TS ECZ/CZ 8K – 10K: 62 mẫu</div>
                     </div>
@@ -270,80 +311,84 @@
 
                 <div class="workstream-title">2. PROMOTION</div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Chăm sóc data 1-1</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Chăm sóc data 1-1</div>
                     <div class="grid-cell col-span-2 relative"><div class="activity-bar bg-sc-active uppercase">CHĂM SÓC DATA 1-1</div></div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Trả góp 0%</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Trả góp 0%</div>
                     <div class="grid-cell col-start-10 col-span-6 relative"><div class="activity-bar bg-sc-active uppercase">Scheme Trả góp 0% dành cho KHM</div></div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Zalo Mini Program</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Zalo Mini Program</div>
                     <div class="grid-cell col-start-9 col-span-7 relative"><div class="activity-bar bg-sc-active uppercase font-black">ƯU ĐÃI 9% DÀNH RIÊNG KHÁCH HÀNG MỚI</div></div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Mobility</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Mobility</div>
                     <div class="grid-cell col-start-9 col-span-7 relative"><div class="activity-bar bg-sc-active">CHUỖI TỌA ĐỘ SN 38 NĂM TẠI SATRA VÕ VĂN  KIỆT</div></div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-red-600 bg-red-50">Quà Non-Purchase (Plan)</div>
+                    <div class="grid-cell sticky-col bg-red-50 font-bold border-r border-slate-200 text-red-600">Quà Non-Purchase (Plan)</div>
                     <div class="grid-cell col-span-11 relative">
                         <div class="activity-bar bg-cn-action pulse-red uppercase">321 Phần quà từ KDQT -> CN share plan dùng</div>
                     </div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-red-600 bg-red-50">CX Activation (Plan)</div>
+                    <div class="grid-cell sticky-col bg-red-50 font-bold border-r border-slate-200 text-red-600">CX Activation (Plan)</div>
                     <div class="grid-cell col-start-13 col-span-2 relative">
                         <div class="activity-bar bg-cn-action pulse-red uppercase">CN share plan triển khai</div>
                     </div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Chương trình SN PNJ 38 năm</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Chương trình SN PNJ 38 năm</div>
                     <div class="grid-cell col-start-6 col-span-12 relative">
                         <div class="activity-bar bg-sc-active">TRIỂN KHAI CHƯƠNG TRÌNH SINH NHẬT PNJ 38 NĂM</div></div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Livestream & Short Video</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Livestream & Short Video</div>
                     <div class="grid-cell col-span-12 relative"><div class="activity-bar bg-sc-active">TRIỂN KHAI 495 PHIÊN LIVESTREAM + 234 SHORT VIDEO</div></div>
                 </div>
+                
                 <div class="workstream-title">3. PLACE</div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Partnership</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Partnership</div>
                     <div class="grid-cell col-start-9 col-span-7 relative">
                         <div class="activity-bar bg-sc-active">LOCAL F&B | MOMO | ZALOPAY | CELLPHONES</div>
                     </div>
                 </div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Push Ads</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Push Ads</div>
                     <div class="grid-cell col-start-5 col-span-11 relative">
                         <div class="activity-bar bg-sc-active uppercase">PUSH LOCAL ADS</div>
                     </div>
                 </div>
-            </div>
-        </div>
+                
                 <div class="workstream-title">4. POLICY</div>
                 <div class="timeline-grid">
-                    <div class="grid-cell font-bold border-r border-slate-200 text-slate-600 italic">Chương trình thi đua HCM</div>
+                    <div class="grid-cell sticky-col font-bold border-r border-slate-200 text-slate-600 italic">Chương trình thi đua HCM</div>
                     <div class="grid-cell col-span-12 relative"><div class="activity-bar bg-sc-active uppercase">TOP CH CÓ % ĐẠT CHỈ TIÊU KHM CAO NHẤT BẢNG ĐẤU THÁNG 4</div></div>
                 </div>
+            </div>
+        </div>
+    </div>
+                
     <!-- Modal Content Creator -->
     <div id="content-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl">
+        <div class="bg-white rounded-xl max-w-2xl w-full p-5 md:p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-black pnj-navy-text uppercase">✨ Sáng tạo Nội dung Chiến dịch</h2>
+                <h2 class="text-sm md:text-lg font-black pnj-navy-text uppercase">✨ Sáng tạo Nội dung</h2>
                 <button onclick="closeContentModal()" class="text-slate-400 hover:text-black text-2xl">✕</button>
             </div>
             <div class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-black uppercase text-slate-500 mb-1">Loại nội dung cần tạo</label>
-                    <select id="content-type" class="w-full border p-2 rounded text-sm font-bold">
+                    <select id="content-type" class="w-full border p-2 rounded text-xs md:text-sm font-bold bg-white outline-none focus:border-pnj-navy">
                         <option value="livestream">Kịch bản Livestream Sinh nhật 38 Năm</option>
                         <option value="facebook_ads">Bài viết Facebook Ads Ưu đãi 9% KHM</option>
                         <option value="zalo_msg">Tin nhắn Zalo chăm sóc Data 1-1</option>
                     </select>
                 </div>
                 <button id="generate-content-btn" onclick="generateAIContent()" class="w-full bg-pnj-navy text-white font-black py-3 rounded uppercase text-xs hover:bg-opacity-90">Tạo nội dung ngay</button>
-                <div id="content-result" class="hidden mt-4 p-4 bg-slate-50 rounded border border-dashed border-slate-300 max-h-[300px] overflow-y-auto text-sm text-slate-600 italic leading-relaxed">
+                <div id="content-result" class="hidden mt-4 p-3 md:p-4 bg-slate-50 rounded border border-dashed border-slate-300 max-h-[250px] overflow-y-auto text-xs md:text-sm text-slate-600 italic leading-relaxed">
                 </div>
             </div>
         </div>
